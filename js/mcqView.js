@@ -5,10 +5,10 @@ define([
   var McqView = QuestionView.extend({
 
     events: {
-      'focus .mcq-item input':'onItemFocus',
-      'blur .mcq-item input':'onItemBlur',
-      'change .mcq-item input':'onItemSelected',
-      'keyup .mcq-item input':'onKeyPress'
+      'focus .js-mcq-item-input': 'onItemFocus',
+      'blur .js-mcq-item-input': 'onItemBlur',
+      'change .js-mcq-item-input': 'onItemSelected',
+      'keyup .js-mcq-item-input': 'onKeyPress'
     },
 
     resetQuestionOnRevisit: function() {
@@ -30,14 +30,14 @@ define([
 
     setAllItemsEnabled: function(isEnabled) {
       _.each(this.model.get('_items'), function(item, index){
-        var $itemLabel = this.$('label').eq(index);
-        var $itemInput = this.$('input').eq(index);
+        var $itemLabel = this.$('.js-mcq-item-label').eq(index);
+        var $itemInput = this.$('.js-mcq-item-input').eq(index);
 
         if (isEnabled) {
-          $itemLabel.removeClass('disabled');
+          $itemLabel.removeClass('is-disabled');
           $itemInput.prop('disabled', false);
         } else {
-          $itemLabel.addClass('disabled');
+          $itemLabel.addClass('is-disabled');
           $itemInput.prop('disabled', true);
         }
       }, this);
@@ -57,17 +57,17 @@ define([
 
     onItemFocus: function(event) {
       if(this.model.get('_isEnabled') && !this.model.get('_isSubmitted')){
-        $("label[for='"+$(event.currentTarget).attr('id')+"']").addClass('highlighted');
+        $(".js-mcq-item-label[for='"+$(event.currentTarget).attr('id')+"']").addClass('is-highlighted');
       }
     },
 
     onItemBlur: function(event) {
-      $("label[for='"+$(event.currentTarget).attr('id')+"']").removeClass('highlighted');
+      $(".js-mcq-item-label[for='"+$(event.currentTarget).attr('id')+"']").removeClass('is-highlighted');
     },
 
     onItemSelected: function(event) {
       if(this.model.get('_isEnabled') && !this.model.get('_isSubmitted')){
-        var selectedItemObject = this.model.get('_items')[$(event.currentTarget).parent('.component-item').index()];
+        var selectedItemObject = this.model.get('_items')[$(event.currentTarget).parent('.js-mcq-item').index()];
         this.toggleItemSelected(selectedItemObject, event);
       }
     },
@@ -75,14 +75,14 @@ define([
     toggleItemSelected:function(item, clickEvent) {
       var selectedItems = this.model.get('_selectedItems');
       var itemIndex = _.indexOf(this.model.get('_items'), item),
-        $itemLabel = this.$('label').eq(itemIndex),
-        $itemInput = this.$('input').eq(itemIndex),
-        selected = !$itemLabel.hasClass('selected');
+        $itemLabel = this.$('.js-mcq-item-label').eq(itemIndex),
+        $itemInput = this.$('.js-mcq-item-input').eq(itemIndex),
+        selected = !$itemLabel.hasClass('is-selected');
 
       if(selected) {
         if(this.model.get('_selectable') === 1){
-          this.$('label').removeClass('selected');
-          this.$('input').prop('checked', false);
+          this.$('.js-mcq-item-label').removeClass('is-selected');
+          this.$('.js-mcq-item-input').prop('checked', false);
           this.deselectAllItems();
           selectedItems[0] = item;
         } else if(selectedItems.length < this.model.get('_selectable')) {
@@ -91,10 +91,10 @@ define([
           clickEvent.preventDefault();
           return;
         }
-        $itemLabel.addClass('selected');
+        $itemLabel.addClass('is-selected');
       } else {
         selectedItems.splice(_.indexOf(selectedItems, item), 1);
-        $itemLabel.removeClass('selected');
+        $itemLabel.removeClass('is-selected');
       }
       $itemInput.prop('checked', selected);
       item._isSelected = selected;
@@ -111,8 +111,8 @@ define([
       if (!this.model.get('_canShowMarking')) return;
 
       _.each(this.model.get('_items'), function(item, i) {
-        var $item = this.$('.component-item').eq(i);
-        $item.removeClass('correct incorrect').addClass(item._isCorrect ? 'correct' : 'incorrect');
+        var $item = this.$('.js-mcq-item').eq(i);
+        $item.removeClass('is-correct is-incorrect').addClass(item._isCorrect ? 'is-correct' : 'is-incorrect');
       }, this);
     },
 
@@ -127,9 +127,9 @@ define([
     },
 
     resetItems: function() {
-      this.$('.component-item label').removeClass('selected');
-      this.$('.component-item').removeClass('correct incorrect');
-      this.$('input').prop('checked', false);
+      this.$('.js-mcq-item-label').removeClass('is-selected');
+      this.$('.js-mcq-item').removeClass('is-correct is-incorrect');
+      this.$('.js-mcq-item-input').prop('checked', false);
       this.model.resetItems();
     },
 
@@ -140,13 +140,13 @@ define([
     },
 
     setOptionSelected:function(index, selected) {
-      var $itemLabel = this.$('label').eq(index);
-      var $itemInput = this.$('input').eq(index);
+      var $itemLabel = this.$('.js-mcq-item-label').eq(index);
+      var $itemInput = this.$('.js-mcq-item-input').eq(index);
       if (selected) {
-        $itemLabel.addClass('selected');
+        $itemLabel.addClass('is-selected');
         $itemInput.prop('checked', true);
       } else {
-        $itemLabel.removeClass('selected');
+        $itemLabel.removeClass('is-selected');
         $itemInput.prop('checked', false);
       }
     },
