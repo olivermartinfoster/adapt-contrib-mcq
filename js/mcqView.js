@@ -5,10 +5,10 @@ define([
   var McqView = QuestionView.extend({
 
     events: {
-      'focus .js-mcq-item-input': 'onItemFocus',
-      'blur .js-mcq-item-input': 'onItemBlur',
-      'change .js-mcq-item-input': 'onItemSelected',
-      'keyup .js-mcq-item-input': 'onKeyPress'
+      'focus .js-item-input': 'onItemFocus',
+      'blur .js-item-input': 'onItemBlur',
+      'change .js-item-input': 'onItemSelected',
+      'keyup .js-item-input': 'onKeyPress'
     },
 
     resetQuestionOnRevisit: function() {
@@ -30,8 +30,8 @@ define([
 
     setAllItemsEnabled: function(isEnabled) {
       _.each(this.model.get('_items'), function(item, index){
-        var $itemLabel = this.$('.js-mcq-item-label').eq(index);
-        var $itemInput = this.$('.js-mcq-item-input').eq(index);
+        var $itemLabel = this.$('.js-item-label').eq(index);
+        var $itemInput = this.$('.js-item-input').eq(index);
 
         if (isEnabled) {
           $itemLabel.removeClass('is-disabled');
@@ -57,12 +57,12 @@ define([
 
     onItemFocus: function(event) {
       if(this.model.get('_isEnabled') && !this.model.get('_isSubmitted')){
-        $(".js-mcq-item-label[for='"+$(event.currentTarget).attr('id')+"']").addClass('is-highlighted');
+        $(".js-item-label[for='"+$(event.currentTarget).attr('id')+"']").addClass('is-highlighted');
       }
     },
 
     onItemBlur: function(event) {
-      $(".js-mcq-item-label[for='"+$(event.currentTarget).attr('id')+"']").removeClass('is-highlighted');
+      $(".js-item-label[for='"+$(event.currentTarget).attr('id')+"']").removeClass('is-highlighted');
     },
 
     onItemSelected: function(event) {
@@ -75,14 +75,14 @@ define([
     toggleItemSelected:function(item, clickEvent) {
       var selectedItems = this.model.get('_selectedItems');
       var itemIndex = _.indexOf(this.model.get('_items'), item),
-        $itemLabel = this.$('.js-mcq-item-label').eq(itemIndex),
-        $itemInput = this.$('.js-mcq-item-input').eq(itemIndex),
+        $itemLabel = this.$('.js-item-label').eq(itemIndex),
+        $itemInput = this.$('.js-item-input').eq(itemIndex),
         selected = !$itemLabel.hasClass('is-selected');
 
       if(selected) {
         if(this.model.get('_selectable') === 1){
-          this.$('.js-mcq-item-label').removeClass('is-selected');
-          this.$('.js-mcq-item-input').prop('checked', false);
+          this.$('.js-item-label').removeClass('is-selected');
+          this.$('.js-item-input').prop('checked', false);
           this.deselectAllItems();
           selectedItems[0] = item;
         } else if(selectedItems.length < this.model.get('_selectable')) {
@@ -127,9 +127,9 @@ define([
     },
 
     resetItems: function() {
-      this.$('.js-mcq-item-label').removeClass('is-selected');
+      this.$('.js-item-label').removeClass('is-selected');
       this.$('.js-mcq-item').removeClass('is-correct is-incorrect');
-      this.$('.js-mcq-item-input').prop('checked', false);
+      this.$('.js-item-input').prop('checked', false);
       this.model.resetItems();
     },
 
@@ -140,8 +140,8 @@ define([
     },
 
     setOptionSelected:function(index, selected) {
-      var $itemLabel = this.$('.js-mcq-item-label').eq(index);
-      var $itemInput = this.$('.js-mcq-item-input').eq(index);
+      var $itemLabel = this.$('.js-item-label').eq(index);
+      var $itemInput = this.$('.js-item-input').eq(index);
       if (selected) {
         $itemLabel.addClass('is-selected');
         $itemInput.prop('checked', true);

@@ -7,8 +7,8 @@
     {{#each _items}}
     <div class="m-mcq__item js-mcq-item item-{{@index}}{{#unless ../_isEnabled}}{{#if ../_canShowMarking}}{{#if _isCorrect}} is-correct{{else}} is-incorrect{{/if}}{{/if}}{{/unless}}">
 
-      <input class="m-mcq__item-input js-mcq-item-input" type="checkbox" id="{{../_id}}-{{@index}}"{{#unless ../_isEnabled}} disabled{{/unless}}/>
-      <label class="m-mcq__item-label js-mcq-item-label{{#unless ../_isEnabled}} is-disabled{{/unless}}{{#if _isSelected}} is-selected{{/if}}" id="{{../_id}}-{{@index}}-aria" for="{{../_id}}-{{@index}}" >
+      <input class="m-mcq__item-input js-item-input" type="checkbox" id="{{../_id}}-{{@index}}"{{#unless ../_isEnabled}} disabled{{/unless}}/>
+      <label class="m-mcq__item-label js-item-label{{#unless ../_isEnabled}} is-disabled{{/unless}}{{#if _isSelected}} is-selected{{/if}}" id="{{../_id}}-{{@index}}-aria" for="{{../_id}}-{{@index}}" >
 
         <div class="m-mcq__item-state">
 
