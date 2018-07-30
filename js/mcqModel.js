@@ -149,7 +149,9 @@ define([
 
       this.set({
         feedbackTitle: title,
-        feedbackMessage: selectedItem.feedback
+        feedbackMessage: selectedItem.feedback,
+        feedbackImage: selectedItem._feedbackImage,
+        feedbackClasses: selectedItem._feedbackClasses
       });
     },
 
